@@ -1,0 +1,8 @@
+## Interface: 120000, 120001
+## Title: HunterPetStatus
+## Notes: Shows an icon when your hunter pet is missing or dead.
+## Author: Nbxqt
+## Version: 1.4.1
+## SavedVariables: HunterPetStatusDB
+
+Core.lua
