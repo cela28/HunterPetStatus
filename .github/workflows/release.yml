@@ -1,0 +1,35 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Package addon
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          mkdir -p dist/HunterPetStatus
+          cp Core.lua HunterPetStatus.toc Expressway.ttf dist/HunterPetStatus/
+          cd dist
+          zip -r "HunterPetStatus-${VERSION}.zip" HunterPetStatus
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          gh release create "$GITHUB_REF_NAME" \
+            "dist/HunterPetStatus-${VERSION}.zip" \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "HunterPetStatus ${VERSION}" \
+            --generate-notes
